@@ -51,4 +51,29 @@ class ListTest < Minitest::Test
     @list.append("Mariner")
     assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
   end
+
+  def test_it_can_prepend_nodes_to_list
+    assert_nil @list.head
+    assert_nil @list.to_string
+
+    @list.append("Mariner")
+    assert_equal @list.to_string, "The Mariner family"
+    assert_equal 1, @list.count
+
+    @list.prepend("Davis")
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
+    assert_equal 2, @list.count
+  end
+
+  def test_it_can_insert_nodes_in_list
+    assert_nil @list.head
+    assert_nil @list.to_string
+
+    @list.prepend("Davis")
+    @list.append("Mariner")
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
+
+    @list.insert(1, "Chakeres")
+    assert_equal @list.to_string, "The Davis family, followed by the Chakeres family, followed by the Mariner family"
+  end
 end
