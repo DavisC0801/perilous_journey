@@ -51,4 +51,46 @@ class ListTest < Minitest::Test
     @list.append("Mariner")
     assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
   end
+
+  def test_it_can_prepend_nodes_to_list
+    assert_nil @list.head
+    assert_nil @list.to_string
+
+    @list.append("Mariner")
+    assert_equal @list.to_string, "The Mariner family"
+    assert_equal 1, @list.count
+
+    @list.prepend("Davis")
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
+    assert_equal 2, @list.count
+  end
+
+  def test_it_can_insert_nodes_in_list
+    assert_nil @list.head
+    assert_nil @list.to_string
+
+    @list.prepend("Davis")
+    @list.append("Mariner")
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
+
+    @list.insert(1, "Chakeres")
+    assert_equal @list.to_string, "The Davis family, followed by the Chakeres family, followed by the Mariner family"
+
+    #expected behavor when out of scope is to add to end of chain
+    @list.insert(50, "Cornelissen")
+    assert_equal @list.to_string, "The Davis family, followed by the Chakeres family, followed by the Mariner family, followed by the Cornelissen family"
+  end
+
+  def test_it_has_find_functionality
+    @list.append("Davis")
+    @list.append("Mariner")
+    @list.append("Chakeres")
+    @list.append("Cornelissen")
+
+    assert_equal @list.find(2, 1), "The Chakeres family"
+    assert_equal @list.find(1, 3), "The Mariner family, followed by the Chakeres family, followed by the Cornelissen family"
+
+    assert_equal @list.find(50, 50), "The Cornelissen family"
+    assert_equal @list.find(0, 50), "The Davis family, followed by the Chakeres family, followed by the Mariner family, followed by the Cornelissen family"
+  end
 end
