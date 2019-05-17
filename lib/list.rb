@@ -9,7 +9,7 @@ class List
   end
 
   def append(surname)
-    tail(@head).next_node = Node.new(surname) if @head != nil
+    tail(@head).add_node(Node.new(surname)) if @head != nil
     @head = Node.new(surname) if @head == nil
   end
 
