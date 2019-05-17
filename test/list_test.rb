@@ -23,8 +23,32 @@ class ListTest < Minitest::Test
   end
 
   def test_it_has_a_to_string_function
+    assert_nil @list.to_string
+
     @list.append("Davis")
 
     assert_equal @list.to_string, "The Davis family"
+  end
+
+  def test_multiple_nodes_can_be_added
+    assert_nil @list.head
+
+    @list.append("Davis")
+    assert_nil @list.head.next_node
+
+    @list.append("Mariner")
+
+    assert_equal 2, @list.count
+    assert_nil @list.head.next_node.next_node
+  end
+
+  def test_to_string_function_handles_multiple_nodes
+    assert_nil @list.to_string
+
+    @list.append("Davis")
+    assert_equal @list.to_string, "The Davis family"
+
+    @list.append("Mariner")
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
   end
 end
