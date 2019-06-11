@@ -61,5 +61,20 @@ class List
     string_list(node.next_node)
   end
 
+  def string_list_limited(node, limit)
+    return @string if @count >= limit || node == nil
+    @string += ", followed by the #{node.surname} family" if @string != nil
+    @string = "The #{node.surname} family" if @string == nil
+    @count += 1
+    string_list_limited(node.next_node, limit)
+  end
+
+  def find(index, count)
+    @count = 0
+    start_node = find_node_by_index(index, @head)
+    @string = nil
+    @count = 0
+    string_list_limited(start_node, count)
+  end
 
 end

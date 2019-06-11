@@ -91,6 +91,6 @@ class ListTest < Minitest::Test
     assert_equal @list.find(1, 3), "The Mariner family, followed by the Chakeres family, followed by the Cornelissen family"
 
     assert_equal @list.find(50, 50), "The Cornelissen family"
-    assert_equal @list.find(0, 50), "The Davis family, followed by the Chakeres family, followed by the Mariner family, followed by the Cornelissen family"
+    assert_equal @list.find(0, 50), "The Davis family, followed by the Mariner family, followed by the Chakeres family, followed by the Cornelissen family"
   end
 end
