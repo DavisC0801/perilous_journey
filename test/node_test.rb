@@ -17,4 +17,10 @@ class Nodetest < Minitest::Test
   def test_it_has_a_nil_next_node_by_default
     assert_nil @node.next_node
   end
+
+  def test_a_new_next_node_can_be_set
+    new_node = Node.new("Drake")
+    @node.set_next(new_node)
+    assert_equal @node.next_node.surname , "Drake"
+  end
 end
