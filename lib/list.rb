@@ -4,82 +4,80 @@ class List
   attr_reader :head
   def initialize
     @head = nil
-    @count = 0
-    @string = nil
+    @list_size = 0
   end
 
   def append(surname)
-    tail(@head).add_node(Node.new(surname)) if !@head.nil?
+    find_node_by_index(@list_size -1).set_next(Node.new(surname)) if !@head.nil?
     @head = Node.new(surname) if @head.nil?
+    @list_size += 1
   end
 
   def count
-    @count = 0
-    count_list(@head)
+    @list_size
   end
 
   def to_string
-    @string = nil
-    string_list(@head)
+    string_list
   end
 
   def prepend(surname)
     new_head = Node.new(surname)
-    new_head.add_node(@head)
+    new_head.set_next(@head)
     @head = new_head
+    @list_size += 1
   end
 
-  def insert(index = 0, surname)
+  def insert(index, surname)
     new_node = Node.new(surname)
-    @count = 0
-    insert_node = find_node_by_index(index - 1, @head)
-    new_node.add_node(insert_node.next_node)
-    insert_node.add_node(new_node)
+    insert_node = find_node_by_index(index - 1)
+    new_node.set_next(insert_node.next_node)
+    insert_node.set_next(new_node)
+    @list_size += 1
   end
 
-  def tail(node)
-    return node if node.next_node.nil?
-    tail(node.next_node)
+  def find_node_by_index(index, node = @head, current_index = 0)
+    return node if current_index >= index || node.nil? || node.next_node.nil?
+    current_index += 1
+    find_node_by_index(index, node.next_node, current_index)
   end
 
-  def find_node_by_index(index = 0, node = @head)
-    return node if @count == index || node.next_node.nil?
-    @count += 1
-    find_node_by_index(index, node.next_node)
+  def string_list(node = @head, string = nil)
+    return string if node.nil?
+    string = "The #{node.surname} family" if node == @head
+    string += ", followed by the #{node.surname} family" if node != @head
+    string_list(node.next_node, string)
   end
 
-  def count_list(node)
-    return @count if node.nil?
-    @count += 1
-    count_list(node.next_node)
+  def string_list_limited(node, limit, current_index = 0, string = nil)
+    return string if current_index >= limit || node.nil?
+    string += ", followed by the #{node.surname} family" if !string.nil?
+    string = "The #{node.surname} family" if string.nil?
+    current_index += 1
+    string_list_limited(node.next_node, limit, current_index, string)
   end
 
-  def string_list(node)
-    return @string if node.nil?
-    @string = "The #{node.surname} family" if node == @head
-    @string += ", followed by the #{node.surname} family" if node != @head
-    string_list(node.next_node)
-  end
-
-  def string_list_limited(node, limit)
-    return @string if @count >= limit || node.nil?
-    @string += ", followed by the #{node.surname} family" if !@string.nil?
-    @string = "The #{node.surname} family" if @string.nil?
-    @count += 1
-    string_list_limited(node.next_node, limit)
-  end
-
-  def find(index = 0, count = 1)
-    @count = 0
-    start_node = find_node_by_index(index, @head)
-    @string = nil
-    @count = 0
-    string_list_limited(start_node, count)
+  def find(start_index = 0, number_of_names = @list_size)
+    start_node = find_node_by_index(start_index)
+    string_list_limited(start_node, number_of_names)
   end
 
   def includes?(search_value, node = @head)
     return false if node.nil?
     return true if node.surname == search_value
     includes?(search_value, node.next_node)
+  end
+
+  def pop
+    return nil if @head.nil?
+    new_tail = find_node_by_index(@list_size - 2)
+    if new_tail == @head
+      puts "The #{new_tail.surname} family has died of dysentery"
+      @head = nil
+    else
+      puts "The #{new_tail.next_node.surname} family has died of dysentery"
+      new_tail.set_next(nil)
+    end
+    @list_size -= 1
   end
 end
