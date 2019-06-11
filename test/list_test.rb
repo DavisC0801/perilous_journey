@@ -82,7 +82,7 @@ class ListTest < Minitest::Test
   end
 
   def test_it_has_find_functionality
-    @list.append("Davis")
+    @list.prepend("Davis")
     @list.append("Mariner")
     @list.append("Chakeres")
     @list.append("Cornelissen")
@@ -92,5 +92,18 @@ class ListTest < Minitest::Test
 
     assert_equal @list.find(50, 50), "The Cornelissen family"
     assert_equal @list.find(0, 50), "The Davis family, followed by the Mariner family, followed by the Chakeres family, followed by the Cornelissen family"
+  end
+
+  def test_it_can_check_if_data_is_included_in_list
+    @list.prepend("Davis")
+    @list.append("Mariner")
+    @list.append("Chakeres")
+    @list.append("Cornelissen")
+
+    assert @list.includes?("Davis")
+    assert @list.includes?("Chakeres")
+    assert @list.includes?("Cornelissen")
+    refute @list.includes?("test_99")
+    refute @list.includes?("facepalm")
   end
 end
