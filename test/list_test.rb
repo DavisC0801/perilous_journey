@@ -106,4 +106,28 @@ class ListTest < Minitest::Test
     refute @list.includes?("test_99")
     refute @list.includes?("facepalm")
   end
+
+  def test_it_can_pop_from_the_list
+    assert_nil @list.pop
+
+    @list.prepend("Davis")
+    assert_output("The Davis family has died of dysentery\n", nil) do
+      @list.pop
+    end
+    assert_nil @list.to_string
+
+    @list.prepend("Davis")
+    @list.append("Mariner")
+    @list.append("Chakeres")
+    @list.append("Cornelissen")
+
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family, followed by the Chakeres family, followed by the Cornelissen family"
+    assert_output("The Cornelissen family has died of dysentery\n", nil) do
+      @list.pop
+    end
+    assert_output("The Chakeres family has died of dysentery\n", nil) do
+      @list.pop
+    end
+    assert_equal @list.to_string, "The Davis family, followed by the Mariner family"
+  end
 end
