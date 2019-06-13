@@ -7,9 +7,9 @@ class List
     @list_size = 0
   end
 
-  def append(surname)
-    find_node_by_index(@list_size -1).set_next(Node.new(surname)) if !@head.nil?
-    @head = Node.new(surname) if @head.nil?
+  def append(surname, supplies = nil)
+    find_node_by_index(@list_size -1).set_next(Node.new(surname, supplies)) if !@head.nil?
+    @head = Node.new(surname, supplies) if @head.nil?
     @list_size += 1
   end
 
@@ -21,15 +21,15 @@ class List
     string_list
   end
 
-  def prepend(surname)
-    new_head = Node.new(surname)
+  def prepend(surname, supplies = nil)
+    new_head = Node.new(surname, supplies)
     new_head.set_next(@head)
     @head = new_head
     @list_size += 1
   end
 
-  def insert(index, surname)
-    new_node = Node.new(surname)
+  def insert(index, surname, supplies = nil)
+    new_node = Node.new(surname, supplies)
     insert_node = find_node_by_index(index - 1)
     new_node.set_next(insert_node.next_node)
     insert_node.set_next(new_node)
@@ -79,5 +79,12 @@ class List
       new_tail.set_next(nil)
     end
     @list_size -= 1
+  end
+
+  def train_supplies(node = @head, hash = {})
+    hash.merge!(node.supplies) {|key, v1, v2| v1 + v2}
+    node = node.next_node
+    return hash if node.nil?
+    train_supplies(node, hash)
   end
 end
