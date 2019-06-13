@@ -27,4 +27,13 @@ class WagonTrainTest < Minitest::Test
     assert_equal @wt.list.head.next_node.surname, "Mariner"
     assert_equal @wt.count, 2
   end
+
+  def test_it_can_store_supplies
+    @wt.append("Davis", {"pounds of food" => 200})
+    assert_equal @wt.list.head.supplies, {"pounds of food" => 200}
+    @wt.list.prepend("Mariner", {"spare wagon tongues" => 3})
+    @wt.list.insert(1, "Chakeres", {"pounds of food" => 300})
+    assert_equal @wt.count, 3
+    assert_equal @wt.supplies, {"spare wagon tongues" => 3, "pounds of food" => 500}
+  end
 end
